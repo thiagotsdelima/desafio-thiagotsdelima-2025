@@ -47,4 +47,14 @@ describe('Abrigo de Animais', () => {
     )
     expect(resultado).toEqual({ erro: 'Brinquedo inválido', lista: null })
   })
+
+  test('Deve rejeitar animais duplicados', () => {
+    const resultado = new AbrigoAnimais().encontraPessoas(
+      'RATO,BOLA',
+      'RATO,NOVELO',
+      'Rex,Rex'
+    )
+    expect(resultado.erro).toBe('Animal inválido')
+    expect(resultado.lista).toBeFalsy()
+  })
 })

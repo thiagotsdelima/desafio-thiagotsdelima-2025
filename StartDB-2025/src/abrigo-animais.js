@@ -1,5 +1,5 @@
 class AbrigoAnimais {
-  avaliableAnimals = [
+  animaisDisponiveis = [
     'Rex',
     'Mimi',
     'Fofo',
@@ -10,17 +10,7 @@ class AbrigoAnimais {
     'Loco'
   ]
 
-  validToy = ['RATO', 'NOVELO', 'BOLA', 'LASER', 'CAIXA', 'SKATE']
-
-  animalType = {
-    Rex: 'cao',
-    Mimi: 'gato',
-    Fofo: 'gato',
-    Zero: 'gato',
-    Bola: 'cao',
-    Bebe: 'cao',
-    Loco: 'jabuti'
-  }
+  brinquedosValidos = ['RATO', 'NOVELO', 'BOLA', 'LASER', 'CAIXA', 'SKATE']
 
   animalBrinquedos = {
     Rex: ['RATO', 'BOLA'],
@@ -38,26 +28,34 @@ class AbrigoAnimais {
     if (typeof brinquedosPessoa2 === 'string')
       brinquedosPessoa2 = brinquedosPessoa2.split(',')
 
-    const todosBrinquedos = new Set(this.validToy)
-    const hasDuplicateToys = (toys) => new Set(toys).size !== toys.length
+    const invalidoBrinquedo = (toys) =>
+      toys.filter((b) => !this.brinquedosValidos.includes(b)).length > 0
+
+    const brinquedoDuplicado = (toys) =>
+      toys.filter((toy, i) => toys.indexOf(toy) !== i).length > 0
 
     if (
-      brinquedosPessoa1.some((b) => !todosBrinquedos.has(b)) ||
-      brinquedosPessoa2.some((b) => !todosBrinquedos.has(b)) ||
-      hasDuplicateToys(brinquedosPessoa1) ||
-      hasDuplicateToys(brinquedosPessoa2)
+      invalidoBrinquedo(brinquedosPessoa1) ||
+      invalidoBrinquedo(brinquedosPessoa2) ||
+      brinquedoDuplicado(brinquedosPessoa1) ||
+      brinquedoDuplicado(brinquedosPessoa2)
     ) {
       return { erro: 'Brinquedo inválido', lista: null }
     }
 
     const animaisOrdem = ordemAnimais.split(',')
-    const animaisUnicos = new Set(animaisOrdem)
 
-    const animaisValidos = animaisOrdem.every((animal) =>
-      this.avaliableAnimals.includes(animal)
-    )
+    const animalDuplicado = animaisOrdem.reduce((acc, animal, i, arr) => {
+      if (arr.indexOf(animal) !== i) acc = true
+      return acc
+    }, false)
 
-    if (!animaisValidos || animaisOrdem.length !== animaisUnicos.size) {
+    const animaisValidos =
+      !animaisOrdem.filter(
+        (animal) => !this.animaisDisponiveis.includes(animal)
+      ).length > 0
+
+    if (!animaisValidos || animalDuplicado) {
       return { erro: 'Animal inválido', lista: null }
     }
 
