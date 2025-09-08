@@ -50,12 +50,12 @@ class AbrigoAnimais {
       return acc
     }, false)
 
-    const animaisValidos =
+    const semAnimaisInvalidos =
       !animaisOrdem.filter(
         (animal) => !this.animaisDisponiveis.includes(animal)
       ).length > 0
 
-    if (!animaisValidos || animalDuplicado) {
+    if (!semAnimaisInvalidos || animalDuplicado) {
       return { erro: 'Animal inválido', lista: null }
     }
 
