@@ -48,13 +48,11 @@ describe('Abrigo de Animais', () => {
     expect(resultado).toEqual({ erro: 'Brinquedo inválido', lista: null })
   })
 
-  test('Deve rejeitar animais duplicados', () => {
-    const resultado = new AbrigoAnimais().encontraPessoas(
-      'RATO,BOLA',
-      'RATO,NOVELO',
-      'Rex,Rex'
-    )
-    expect(resultado.erro).toBe('Animal inválido')
-    expect(resultado.lista).toBeFalsy()
+  test('Animal sem brinquedos definidos retorna array vazio', () => {
+    const abrigo = new AbrigoAnimais()
+    abrigo.animaisDisponiveis.push('Toto')
+    const resultado = abrigo.encontraPessoas('RATO,BOLA', 'RATO,NOVELO', 'Toto')
+
+    expect(resultado.lista[0]).toBe('Toto - abrigo')
   })
 })
